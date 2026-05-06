@@ -5,55 +5,79 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For My Love ❤️</title>
 
-<!-- Google Font (handwriting style) -->
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
 
 body{
-    background: linear-gradient(to bottom, #ffd6e0, #ff9eb5);
-    overflow:hidden;
-}
-
-/* container */
-.container{
-    position:relative;
-    width:100%;
-    height:100vh;
-}
-
-/* polaroid */
-.polaroid{
-    position:absolute;
-    width:220px;
-    height:270px;
-    background:white;
-    padding:10px;
-    border-radius:10px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.3);
-    opacity:0;
-    transform:translateY(100px) scale(0.8);
-    animation: showFrame 1s forwards;
-}
-
-@keyframes showFrame{
-    to{
-        opacity:1;
-        transform:translateY(0) scale(1);
-    }
-}
-
-/* image box */
-.imgBox{
-    width:100%;
-    height:75%;
     background:black;
-    border-radius:5px;
+    overflow:hidden;
+    color:white;
+}
+
+/* tap screen */
+.startScreen{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:20px;
+    z-index:10;
+    cursor:pointer;
+}
+
+/* film strip */
+.film{
+    position:absolute;
+    top:50%;
+    left:0;
+    transform:translateY(-50%);
+    display:flex;
+    gap:12px;
+    padding:10px;
+    animation: slide 30s linear infinite;
+}
+
+/* smooth scroll */
+@keyframes slide{
+    0%{transform:translate(0,-50%);}
+    100%{transform:translate(-50%,-50%);}
+}
+
+/* frame */
+.frame{
+    width:140px;
+    height:220px;
+    background:black;
+    border:6px solid #111;
+    border-radius:6px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    padding:6px;
+    flex-shrink:0;
+}
+
+/* film holes */
+.frame::before,
+.frame::after{
+    content:'';
+    height:8px;
+    background: repeating-linear-gradient(
+        90deg,
+        #000 0 8px,
+        #555 8px 16px
+    );
+}
+
+/* image */
+.imgBox{
+    flex:1;
+    background:black;
     overflow:hidden;
 }
 
@@ -62,19 +86,18 @@ body{
     height:100%;
     object-fit:cover;
     opacity:0;
-    transition:opacity 1s ease;
+    transition:opacity 1s;
 }
 
 .reveal img{
     opacity:1;
 }
 
-/* ✍️ handwriting text */
+/* handwriting */
 .caption{
-    margin-top:8px;
-    font-size:20px;
-    color:#ff4d88;
     font-family:'Great Vibes', cursive;
+    font-size:14px;
+    color:#ff4d88;
     white-space:nowrap;
     overflow:hidden;
     border-right:2px solid #ff4d88;
@@ -82,54 +105,68 @@ body{
     animation: typing 2s steps(20,end) forwards, blink 0.6s infinite;
 }
 
-/* typing animation */
 @keyframes typing{
     from{width:0;}
-    to{width:120px;}
+    to{width:90px;}
 }
 
-/* cursor blink */
 @keyframes blink{
     50%{border-color:transparent;}
 }
 
-/* final message */
+/* final text */
 .finalText{
     position:absolute;
-    bottom:40px;
+    bottom:20px;
     width:100%;
     text-align:center;
-    font-size:24px;
-    color:white;
     display:none;
-    text-shadow:0 0 10px #fff,0 0 20px pink;
-    animation: fadeIn 2s forwards;
+    font-size:16px;
+    padding:0 10px;
+    line-height:1.5;
+    text-shadow:0 0 8px #fff,0 0 15px pink;
 }
 
-@keyframes fadeIn{
-    from{opacity:0;}
-    to{opacity:1;}
+/* 📱 MOBILE PERFECT */
+@media (max-width:600px){
+    .film{
+        gap:8px;
+        animation-duration:35s;
+    }
+
+    .frame{
+        width:120px;
+        height:200px;
+    }
+
+    .caption{
+        font-size:13px;
+    }
+
+    .startScreen{
+        font-size:18px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<div class="container" id="container"></div>
+<div class="startScreen" onclick="startSite()">
+Tap to start 💖
+</div>
+
+<div class="film" id="film"></div>
 
 <div class="finalText" id="finalText">
 Thankss myyy beautiful babbyy 💖 <br>
 forr supporting me in my highs and lows… <br><br>
-
 i promiseee thattt yourr rishabh sharmaa is fully yours… <br>
-and he will always support youuu… <br>
-he will always stand besidee you… <br><br>
-
+he will always support youuu and stay beside you… <br><br>
 forever ❤️
 </div>
 
-<!-- MUSIC -->
-<audio autoplay loop>
+<audio id="music" loop>
     <source src="song.mp3" type="audio/mpeg">
 </audio>
 
@@ -140,16 +177,14 @@ let images = [
 "img6.jpg","img7.jpg","img8.jpg","img9.jpg","img10.jpg"
 ];
 
-let container = document.getElementById("container");
+let film = document.getElementById("film");
 
-images.forEach((src, i) => {
+/* duplicate images for smooth loop */
+let allImages = images.concat(images);
 
-    let polaroid = document.createElement("div");
-    polaroid.classList.add("polaroid");
-
-    polaroid.style.top = Math.random()*70 + "%";
-    polaroid.style.left = Math.random()*70 + "%";
-    polaroid.style.animationDelay = i * 1 + "s";
+allImages.forEach((src,i)=>{
+    let frame = document.createElement("div");
+    frame.classList.add("frame");
 
     let imgBox = document.createElement("div");
     imgBox.classList.add("imgBox");
@@ -159,24 +194,29 @@ images.forEach((src, i) => {
 
     let caption = document.createElement("div");
     caption.classList.add("caption");
-    caption.innerText = "my babyy 💖";
+    caption.innerText="my babyy 💖";
 
     imgBox.appendChild(img);
-    polaroid.appendChild(imgBox);
-    polaroid.appendChild(caption);
+    frame.appendChild(imgBox);
+    frame.appendChild(caption);
 
-    container.appendChild(polaroid);
+    film.appendChild(frame);
 
     setTimeout(()=>{
         imgBox.classList.add("reveal");
-    }, (i * 1000) + 800);
-
+    }, i*1000);
 });
 
-// show final message
+/* start */
+function startSite(){
+    document.querySelector(".startScreen").style.display="none";
+    document.getElementById("music").play();
+}
+
+/* final text */
 setTimeout(()=>{
-    document.getElementById("finalText").style.display = "block";
-}, images.length * 1000 + 2000);
+    document.getElementById("finalText").style.display="block";
+}, images.length*1000 + 3000);
 
 </script>
 

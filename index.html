@@ -12,23 +12,15 @@
 
 body{
     background:black;
-    overflow:hidden;
     color:white;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
 }
 
-/* top title */
-.title{
-    position:absolute;
-    top:10px;
-    width:100%;
-    text-align:center;
-    font-size:22px;
-    font-family:'Great Vibes', cursive;
-    color:#ff4d88;
-    text-shadow:0 0 10px #fff,0 0 20px pink;
-}
-
-/* tap screen */
+/* start screen */
 .startScreen{
     position:fixed;
     width:100%;
@@ -42,35 +34,53 @@ body{
     cursor:pointer;
 }
 
+/* title */
+.title{
+    position:absolute;
+    top:10px;
+    width:100%;
+    text-align:center;
+    font-size:20px;
+    font-family:'Great Vibes', cursive;
+    color:#ff4d88;
+    text-shadow:0 0 10px #fff,0 0 20px pink;
+}
+
+/* wrapper */
+.filmWrapper{
+    width:100%;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+}
+
 /* film strip */
 .film{
-    position:absolute;
-    top:50%;
-    left:0;
-    transform:translateY(-50%);
     display:flex;
-    gap:12px;
-    padding:10px;
+    gap:14px;
+    align-items:center;
     animation: slide 30s linear infinite;
 }
 
+/* smooth infinite scroll */
 @keyframes slide{
-    0%{transform:translate(0,-50%);}
-    100%{transform:translate(-50%,-50%);}
+    0%{ transform: translateX(0); }
+    100%{ transform: translateX(-50%); }
 }
 
 /* frame */
 .frame{
-    width:140px;
-    height:220px;
+    width:120px;
+    height:190px;
     background:black;
-    border:6px solid #111;
+    border:5px solid #111;
     border-radius:6px;
     display:flex;
     flex-direction:column;
     justify-content:space-between;
     padding:6px;
     flex-shrink:0;
+    box-shadow:0 0 10px rgba(255,105,180,0.3);
 }
 
 /* film holes */
@@ -107,7 +117,7 @@ body{
 /* handwriting */
 .caption{
     font-family:'Great Vibes', cursive;
-    font-size:14px;
+    font-size:13px;
     color:#ff4d88;
     white-space:nowrap;
     overflow:hidden;
@@ -118,7 +128,7 @@ body{
 
 @keyframes typing{
     from{width:0;}
-    to{width:120px;}
+    to{width:110px;}
 }
 
 @keyframes blink{
@@ -132,18 +142,10 @@ body{
     width:100%;
     text-align:center;
     display:none;
-    font-size:16px;
+    font-size:15px;
     padding:0 10px;
     line-height:1.5;
     text-shadow:0 0 8px #fff,0 0 15px pink;
-}
-
-/* mobile */
-@media (max-width:600px){
-    .frame{
-        width:120px;
-        height:200px;
-    }
 }
 </style>
 </head>
@@ -158,7 +160,9 @@ Tap to start 💖
 Rishabh loves Lakshita ❤️
 </div>
 
-<div class="film" id="film"></div>
+<div class="filmWrapper">
+    <div class="film" id="film"></div>
+</div>
 
 <div class="finalText" id="finalText">
 Thankss myyy beautiful babbyy 💖 <br>
@@ -185,8 +189,8 @@ let images = [
 
 let film = document.getElementById("film");
 
-/* duplicate for smooth scroll */
-let allImages = images.concat(images);
+/* triple for smooth loop */
+let allImages = images.concat(images).concat(images);
 
 allImages.forEach((src,i)=>{
     let frame = document.createElement("div");
@@ -210,7 +214,7 @@ allImages.forEach((src,i)=>{
 
     setTimeout(()=>{
         imgBox.classList.add("reveal");
-    }, i*1000);
+    }, i*900);
 });
 
 /* start */
@@ -222,7 +226,7 @@ function startSite(){
 /* final text */
 setTimeout(()=>{
     document.getElementById("finalText").style.display="block";
-}, images.length*1000 + 3000);
+}, images.length*900 + 3000);
 
 </script>
 

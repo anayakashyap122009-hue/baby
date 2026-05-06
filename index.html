@@ -12,15 +12,11 @@
 
 body{
     background:black;
-    color:white;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
     overflow:hidden;
+    color:white;
 }
 
-/* start screen */
+/* tap screen */
 .startScreen{
     position:fixed;
     width:100%;
@@ -34,53 +30,36 @@ body{
     cursor:pointer;
 }
 
-/* title */
-.title{
-    position:absolute;
-    top:10px;
-    width:100%;
-    text-align:center;
-    font-size:20px;
-    font-family:'Great Vibes', cursive;
-    color:#ff4d88;
-    text-shadow:0 0 10px #fff,0 0 20px pink;
-}
-
-/* wrapper */
-.filmWrapper{
-    width:100%;
-    overflow:hidden;
-    display:flex;
-    justify-content:center;
-}
-
 /* film strip */
 .film{
+    position:absolute;
+    top:50%;
+    left:0;
+    transform:translateY(-50%);
     display:flex;
-    gap:14px;
-    align-items:center;
+    gap:12px;
+    padding:10px;
     animation: slide 30s linear infinite;
 }
 
-/* smooth infinite scroll */
+/* smooth scroll */
 @keyframes slide{
-    0%{ transform: translateX(0); }
-    100%{ transform: translateX(-50%); }
+    0%{transform:translate(0,-50%);}
+    100%{transform:translate(-50%,-50%);}
 }
 
 /* frame */
 .frame{
-    width:120px;
-    height:190px;
+    width:140px;
+    height:220px;
     background:black;
-    border:5px solid #111;
+    border:6px solid #111;
     border-radius:6px;
     display:flex;
     flex-direction:column;
     justify-content:space-between;
     padding:6px;
     flex-shrink:0;
-    box-shadow:0 0 10px rgba(255,105,180,0.3);
 }
 
 /* film holes */
@@ -117,18 +96,18 @@ body{
 /* handwriting */
 .caption{
     font-family:'Great Vibes', cursive;
-    font-size:13px;
+    font-size:14px;
     color:#ff4d88;
     white-space:nowrap;
     overflow:hidden;
     border-right:2px solid #ff4d88;
     width:0;
-    animation: typing 2s steps(25,end) forwards, blink 0.6s infinite;
+    animation: typing 2s steps(20,end) forwards, blink 0.6s infinite;
 }
 
 @keyframes typing{
     from{width:0;}
-    to{width:110px;}
+    to{width:90px;}
 }
 
 @keyframes blink{
@@ -142,10 +121,31 @@ body{
     width:100%;
     text-align:center;
     display:none;
-    font-size:15px;
+    font-size:16px;
     padding:0 10px;
     line-height:1.5;
     text-shadow:0 0 8px #fff,0 0 15px pink;
+}
+
+/* 📱 MOBILE PERFECT */
+@media (max-width:600px){
+    .film{
+        gap:8px;
+        animation-duration:35s;
+    }
+
+    .frame{
+        width:120px;
+        height:200px;
+    }
+
+    .caption{
+        font-size:13px;
+    }
+
+    .startScreen{
+        font-size:18px;
+    }
 }
 </style>
 </head>
@@ -156,23 +156,13 @@ body{
 Tap to start 💖
 </div>
 
-<div class="title">
-Rishabh loves Lakshita ❤️
-</div>
-
-<div class="filmWrapper">
-    <div class="film" id="film"></div>
-</div>
+<div class="film" id="film"></div>
 
 <div class="finalText" id="finalText">
 Thankss myyy beautiful babbyy 💖 <br>
 forr supporting me in my highs and lows… <br><br>
-
 i promiseee thattt yourr rishabh sharmaa is fully yours… <br>
 he will always support youuu and stay beside you… <br><br>
-
-I loveeeee youuu sooo muchhhh myyy sweetheartt ❤️ <br><br>
-
 forever ❤️
 </div>
 
@@ -189,8 +179,8 @@ let images = [
 
 let film = document.getElementById("film");
 
-/* triple for smooth loop */
-let allImages = images.concat(images).concat(images);
+/* duplicate images for smooth loop */
+let allImages = images.concat(images);
 
 allImages.forEach((src,i)=>{
     let frame = document.createElement("div");
@@ -204,7 +194,7 @@ allImages.forEach((src,i)=>{
 
     let caption = document.createElement("div");
     caption.classList.add("caption");
-    caption.innerText="myy babbyygurl 💖";
+    caption.innerText="my babyy 💖";
 
     imgBox.appendChild(img);
     frame.appendChild(imgBox);
@@ -214,7 +204,7 @@ allImages.forEach((src,i)=>{
 
     setTimeout(()=>{
         imgBox.classList.add("reveal");
-    }, i*900);
+    }, i*1000);
 });
 
 /* start */
@@ -226,7 +216,7 @@ function startSite(){
 /* final text */
 setTimeout(()=>{
     document.getElementById("finalText").style.display="block";
-}, images.length*900 + 3000);
+}, images.length*1000 + 3000);
 
 </script>
 

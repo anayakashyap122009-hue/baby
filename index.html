@@ -16,6 +16,18 @@ body{
     color:white;
 }
 
+/* top title */
+.title{
+    position:absolute;
+    top:10px;
+    width:100%;
+    text-align:center;
+    font-size:22px;
+    font-family:'Great Vibes', cursive;
+    color:#ff4d88;
+    text-shadow:0 0 10px #fff,0 0 20px pink;
+}
+
 /* tap screen */
 .startScreen{
     position:fixed;
@@ -42,7 +54,6 @@ body{
     animation: slide 30s linear infinite;
 }
 
-/* smooth scroll */
 @keyframes slide{
     0%{transform:translate(0,-50%);}
     100%{transform:translate(-50%,-50%);}
@@ -102,12 +113,12 @@ body{
     overflow:hidden;
     border-right:2px solid #ff4d88;
     width:0;
-    animation: typing 2s steps(20,end) forwards, blink 0.6s infinite;
+    animation: typing 2s steps(25,end) forwards, blink 0.6s infinite;
 }
 
 @keyframes typing{
     from{width:0;}
-    to{width:90px;}
+    to{width:120px;}
 }
 
 @keyframes blink{
@@ -127,24 +138,11 @@ body{
     text-shadow:0 0 8px #fff,0 0 15px pink;
 }
 
-/* 📱 MOBILE PERFECT */
+/* mobile */
 @media (max-width:600px){
-    .film{
-        gap:8px;
-        animation-duration:35s;
-    }
-
     .frame{
         width:120px;
         height:200px;
-    }
-
-    .caption{
-        font-size:13px;
-    }
-
-    .startScreen{
-        font-size:18px;
     }
 }
 </style>
@@ -156,13 +154,21 @@ body{
 Tap to start 💖
 </div>
 
+<div class="title">
+Rishabh loves Lakshita ❤️
+</div>
+
 <div class="film" id="film"></div>
 
 <div class="finalText" id="finalText">
 Thankss myyy beautiful babbyy 💖 <br>
 forr supporting me in my highs and lows… <br><br>
+
 i promiseee thattt yourr rishabh sharmaa is fully yours… <br>
 he will always support youuu and stay beside you… <br><br>
+
+I loveeeee youuu sooo muchhhh myyy sweetheartt ❤️ <br><br>
+
 forever ❤️
 </div>
 
@@ -179,7 +185,7 @@ let images = [
 
 let film = document.getElementById("film");
 
-/* duplicate images for smooth loop */
+/* duplicate for smooth scroll */
 let allImages = images.concat(images);
 
 allImages.forEach((src,i)=>{
@@ -194,7 +200,7 @@ allImages.forEach((src,i)=>{
 
     let caption = document.createElement("div");
     caption.classList.add("caption");
-    caption.innerText="my babyy 💖";
+    caption.innerText="myy babbyygurl 💖";
 
     imgBox.appendChild(img);
     frame.appendChild(imgBox);
